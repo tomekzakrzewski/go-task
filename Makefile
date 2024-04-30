@@ -1,5 +1,5 @@
 build:
-	@go build -o bin/api
+	@go build -o bin/task
 
 run: build
-	@./bin/api
+	@./bin/task
