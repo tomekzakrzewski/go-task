@@ -13,8 +13,8 @@ import (
 )
 
 var (
-	uri    = "mongodb+srv://challengeUser:WUMglwNBaydH8Yvu@challenge-xzwqd.mongodb.net/getir-case-study?retryWrites=true"
-	dbName = "getircase-study"
+	uri    = ""
+	dbName = ""
 )
 
 func TestGetRecords(t *testing.T) {
