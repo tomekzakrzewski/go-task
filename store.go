@@ -79,6 +79,14 @@ func (s *MongoStore) GetRecords(start time.Time, end time.Time, min int, max int
 				}},
 			}},
 		},
+		bson.D{
+			{"$match", bson.D{
+				{"totalCount", bson.D{
+					{"$gte", min},
+					{"$lte", max},
+				}},
+			}},
+		},
 	}
 
 	cur, err := s.coll.Aggregate(context.Background(), pipeline)
@@ -91,6 +99,8 @@ func (s *MongoStore) GetRecords(start time.Time, end time.Time, min int, max int
 	if err := cur.All(context.Background(), &records); err != nil {
 		return nil, err
 	}
+
+	fmt.Println(records[0].Counts)
 
 	return &records, nil
 }
