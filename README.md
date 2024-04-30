@@ -2,6 +2,8 @@
 
 ## run
 
+- configure env variables
+
 make run
 
 ## endpoints
