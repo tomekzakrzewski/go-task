@@ -100,7 +100,5 @@ func (s *MongoStore) GetRecords(start time.Time, end time.Time, min int, max int
 		return nil, err
 	}
 
-	fmt.Println(records[0].Counts)
-
 	return &records, nil
 }
