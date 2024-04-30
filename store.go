@@ -63,13 +63,25 @@ func (s *MongoStore) InsertRecord(record Record) (*Record, error) {
 }
 
 func (s *MongoStore) GetRecords(start time.Time, end time.Time, min int, max int) (*[]Record, error) {
-	filter := bson.M{
-		"createdAt": bson.M{
-			"$gte": start,
-			"$lte": end,
+	pipeline := bson.A{
+		bson.D{
+			{"$match", bson.D{
+				{"createdAt", bson.D{
+					{"$gte", start},
+					{"$lte", end},
+				}},
+			}},
+		},
+		bson.D{
+			{"$addFields", bson.D{
+				{"totalCount", bson.D{
+					{"$sum", "$counts"},
+				}},
+			}},
 		},
 	}
-	cur, err := s.coll.Find(context.Background(), filter)
+
+	cur, err := s.coll.Aggregate(context.Background(), pipeline)
 	if err != nil {
 		return nil, err
 	}
@@ -80,12 +92,5 @@ func (s *MongoStore) GetRecords(start time.Time, end time.Time, min int, max int
 		return nil, err
 	}
 
-	var response []Record
-
-	for _, record := range records {
-		if record.SumCounts() >= min && record.SumCounts() <= max {
-			response = append(response, record)
-		}
-	}
-	return &response, nil
+	return &records, nil
 }

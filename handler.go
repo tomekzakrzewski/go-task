@@ -60,7 +60,7 @@ func (h *Handler) HandleGetRecords(w http.ResponseWriter, r *http.Request) {
 	}
 
 	resp := Response{
-		Code:    0,
+		Count:   len(respRecords),
 		Msg:     "success",
 		Records: respRecords,
 	}

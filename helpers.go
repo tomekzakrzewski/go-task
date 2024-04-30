@@ -28,7 +28,7 @@ func respondWithJSON(w http.ResponseWriter, statusCode int, payload interface{})
 
 func respondWithError(w http.ResponseWriter, statusCode int, message string) {
 	payload := Response{
-		Code:    statusCode,
+		Count:   0,
 		Msg:     message,
 		Records: []RecordDTO{},
 	}

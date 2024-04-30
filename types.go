@@ -14,7 +14,7 @@ type Request struct {
 }
 
 type Response struct {
-	Code    int         `json:"count" bson:"count"`
+	Count   int         `json:"count" bson:"count"`
 	Msg     string      `json:"msg" bson:"msg"`
 	Records []RecordDTO `json:"records" bson:"records"`
 }
