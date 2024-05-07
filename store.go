@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"sync"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -19,6 +20,7 @@ type MongoStore struct {
 }
 
 type InMemoryDb struct {
+	mu      sync.Mutex
 	payload *map[string]string
 }
 
@@ -29,6 +31,8 @@ func newInMemoryDb() *InMemoryDb {
 }
 
 func (s *InMemoryDb) Insert(key string, value string) (*map[string]string, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
 	(*s.payload)[key] = value
 	return &map[string]string{
 		"key":   key,
@@ -37,6 +41,8 @@ func (s *InMemoryDb) Insert(key string, value string) (*map[string]string, error
 }
 
 func (s *InMemoryDb) Get(key string) (*map[string]string, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
 	value := (*s.payload)[key]
 
 	if value == "" {
